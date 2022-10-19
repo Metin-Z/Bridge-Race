@@ -5,5 +5,6 @@ using System.Linq;
 public class PlayerBridge1 : MonoBehaviour
 {
     public List<GameObject> PlayerBricks1;
+    public List<GameObject> AIBricks1;
    
 }

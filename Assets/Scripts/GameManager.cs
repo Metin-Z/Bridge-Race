@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
     public List<Transform> blockSpawnPosList;
+    public List<GameObject> AISpawnedBlocks;
     public virtual void Awake()
     {
         if (!instance)
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < blockSpawnPosList[1].transform.childCount; i++)
         {
             GameObject cloneAIBlock = Instantiate(AIBlock, blockSpawnPosList[1].GetChild(i).transform.position, Quaternion.identity);
+            AISpawnedBlocks.Add(cloneAIBlock);
             cloneAIBlock.SetActive(true);
         }
         StartCoroutine(SpawnBlock());
@@ -66,7 +68,6 @@ public class GameManager : MonoBehaviour
                     playerBlocks.Add(clonePlayerBlock);
                     BlockPos.RemoveAt(playerBlockPos);
                     clonePlayerBlock.SetActive(true);
-
                 }
             }
             reSpawnAIBlocks = spawnCount - AIBlocks.Count;
@@ -77,12 +78,11 @@ public class GameManager : MonoBehaviour
                 {
                     GameObject cloneAIBlock = Instantiate(AIBlock, BlockPos[AIBlockPos], Quaternion.identity);
                     cloneAIBlock.transform.parent = transform;
+                    AISpawnedBlocks.Add(cloneAIBlock);
                     AIBlocks.Add(cloneAIBlock);
                     BlockPos.RemoveAt(AIBlockPos);
                     cloneAIBlock.SetActive(true);
                 }
-
-
             }
         } while (true);
     }

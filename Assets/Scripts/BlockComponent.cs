@@ -13,8 +13,13 @@ public class BlockComponent : MonoBehaviour
         targetScale = transform.localScale;
         transform.localScale = startScale;
 
-        transform.DOScale(targetScale, 1.5f).SetEase(Ease.InBounce);
-        transform.DORotate(new Vector3(0, 360, 0), 1, RotateMode.FastBeyond360).SetEase(Ease.Linear);
+        Sequence sequence = DOTween.Sequence();
+
+        sequence.Join(transform.DOScale(targetScale, 1.5f).SetEase(Ease.InBounce));
+        sequence.Join(transform.DORotate(new Vector3(0, 360, 0), 1, RotateMode.FastBeyond360).SetEase(Ease.Linear));
+
+        sequence.SetId(gameObject.GetInstanceID());
+        sequence.Play();
 
         spawnPos = transform.position;
         transform.SetParent(GameManager.instance.transform);

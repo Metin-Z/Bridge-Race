@@ -1,19 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using DG.Tweening;
-
-public class PlayerController : MonoBehaviour
+public class AIController : MonoBehaviour
 {
-    public static PlayerController instance;
+    public static AIController instance;
     public Transform BaseSlot;
-    public DynamicJoystick dynamicJoystick;
     public float speed;
     Animator anim;
     public List<Transform> BlockList;
-
-    public float xMinClamp, xMaxClamp, zMinClamp, zMaxClamp;
+    public int randomBlock;
+    public Vector3 target;
     public virtual void Awake()
     {
         if (!instance)
@@ -28,32 +25,32 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
-        anim = GetComponent<Animator>();      
+        anim = GetComponent<Animator>();
+        //StartCoroutine(AIMovement());
     }
-    private void FixedUpdate()
+    private void Update()
     {
-        JoyStickMovement();
+      //  randomBlock = Random.Range(0, GameManager.instance.AISpawnedBlocks.Count);
+      //  target = GameManager.instance.AISpawnedBlocks[randomBlock].transform.position;
     }
-    public void JoyStickMovement()
+    public IEnumerator AIMovement()
     {
-        Vector3 moveForward = new Vector3(dynamicJoystick.Horizontal, 0, dynamicJoystick.Vertical);
-        transform.Translate(speed * Time.fixedDeltaTime * moveForward, Space.World);
-        moveForward.Normalize();
-        if (dynamicJoystick.Horizontal !=0 || dynamicJoystick.Vertical !=0)
+        yield return new WaitForSeconds(2);
+        if (GameManager.instance.AISpawnedBlocks !=null)
         {
-            transform.forward = moveForward;
-            anim.SetBool("Run", true);
-        }
-        else
-        {
-            anim.SetBool("Run", false);
+            
+            Sequence sequence1 = DOTween.Sequence();
+
+            sequence1.Join(transform.DOMove(target, 4.5f).SetLoops(6));
+  
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "BlueBlock")
+        if (other.gameObject.tag == "RedBlock")
         {
             other.transform.parent = BaseSlot;
+
 
             Vector3 targetLocalPosition = BaseSlot.localPosition;
             targetLocalPosition.y = BlockList.Count * 0.2F;
@@ -62,11 +59,12 @@ public class PlayerController : MonoBehaviour
 
             DOTween.Kill(block.GetInstanceID(), true);
 
-            GameManager.instance.playerBlocks.Remove(block);
+            GameManager.instance.AIBlocks.Remove(block);
             block.transform.localEulerAngles = Vector3.zero;
             block.GetComponent<BoxCollider>().enabled = false;
-            block.transform.DOLocalJump(targetLocalPosition, 1, 1,0.25F);
+            block.transform.DOLocalJump(targetLocalPosition, 1, 1, 0.25F);
 
+            GameManager.instance.AISpawnedBlocks.Remove(block);
             other.GetComponent<BlockComponent>().AddList();
             BlockList.Add(block.transform);
         }
