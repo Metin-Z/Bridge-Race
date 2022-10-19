@@ -8,9 +8,9 @@ public class BrickComponent : MonoBehaviour
     public bool player, AI;
 
     public PlayerBridge1 bridge;
+    public GameObject playerBridge;
     private void Start()
     {
-        GameObject playerBridge = transform.parent.root.gameObject;
         bridge = playerBridge.GetComponent<PlayerBridge1>();
     }
     private void OnCollisionEnter(Collision collision)
@@ -30,7 +30,6 @@ public class BrickComponent : MonoBehaviour
             AIController.instance.BlockList.Count > 1 &&
             bridge.AIBricks1.Count > 0)
         {
-            Debug.Log("adsadsad0");
             Destroy(transform.GetComponent<BrickComponent>());
             Destroy(AIController.instance.BlockList.LastOrDefault().gameObject);
             AIController.instance.BlockList.Remove(AIController.instance.BlockList.LastOrDefault());
