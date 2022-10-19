@@ -6,18 +6,28 @@ using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
     public DynamicJoystick dynamicJoystick;
     public float speed;
     Animator anim;
     public List<Transform> BlockList;
 
     public float xMinClamp, xMaxClamp, zMinClamp, zMaxClamp;
+    public virtual void Awake()
+    {
+        if (!instance)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
     private void Start()
     {
         anim = GetComponent<Animator>();      
-    }
-    private void Update()
-    {
     }
     private void FixedUpdate()
     {
