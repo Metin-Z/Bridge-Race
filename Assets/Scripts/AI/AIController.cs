@@ -30,8 +30,10 @@ public class AIController : MonoBehaviour
     }
     private void Update()
     {
-      //  randomBlock = Random.Range(0, GameManager.instance.AISpawnedBlocks.Count);
-      //  target = GameManager.instance.AISpawnedBlocks[randomBlock].transform.position;
+        if (!GameManager.instance.isGameRunning)
+            return;
+        //  randomBlock = Random.Range(0, GameManager.instance.AISpawnedBlocks.Count);
+        //  target = GameManager.instance.AISpawnedBlocks[randomBlock].transform.position;
     }
     public IEnumerator AIMovement()
     {

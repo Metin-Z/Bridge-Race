@@ -39,5 +39,6 @@ public class CanvasManager : MonoBehaviour
         PlayerController.instance.enabled = true;
         int AIRandom = Random.Range(0, 8);
         AITXT.text = AINames[AIRandom];
+        GameManager.instance.isGameRunning = true;
     }
 }
