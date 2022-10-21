@@ -19,6 +19,17 @@ public class FinishComponent : MonoBehaviour
             Players.Remove(other.gameObject);
             other.transform.position = WinnerPos.position;
             Players[0].transform.position = LoserPos.position;
+
+            if (other.GetComponent<PlayerController>())
+            {
+                other.GetComponent<PlayerController>().EndGameWin();
+                Players[0].GetComponent<AIController>().EndGameLose();
+            }
+            if (other.GetComponent<AIController>())
+            {
+                other.GetComponent<AIController>().EndGameWin();
+                Players[0].GetComponent<PlayerController>().EndGameLose();
+            }
             
         }
     }

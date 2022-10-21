@@ -71,4 +71,20 @@ public class AIController : MonoBehaviour
             BlockList.Add(block.transform);
         }
     }
+    public void EndGameWin()
+    {
+        anim.SetBool("Run", false);
+        anim.SetBool("Dance", true);
+        Quaternion target = Quaternion.Euler(0, 180, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 200);
+
+    }
+    public void EndGameLose()
+    {
+        anim.SetBool("Run", false);
+        anim.SetBool("Sad", true);
+        Quaternion target = Quaternion.Euler(0, 180, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 200);
+
+    }
 }
