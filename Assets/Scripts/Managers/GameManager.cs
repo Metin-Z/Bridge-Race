@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerBlock, AIBlock;
     public int spawnCount;
 
-    public List<Vector3> BlockPos;
+    public List<Vector3> blockPosForPlayer,blockPosForAi;
     public List<GameObject> playerBlocks, AIBlocks;
 
     public static GameManager instance;
@@ -72,28 +72,28 @@ public class GameManager : MonoBehaviour
 
             for (int i = 0; i < reSpawnPlayerBlocks; i++)
             {
-                int playerBlockPos = Random.Range(0, BlockPos.Count);
+                int playerBlockPos = Random.Range(0, blockPosForPlayer.Count);
 
-                if (BlockPos.Count > 0)
+                if (blockPosForPlayer.Count > 0)
                 {
-                    GameObject clonePlayerBlock = Instantiate(playerBlock, BlockPos[playerBlockPos], Quaternion.identity);
+                    GameObject clonePlayerBlock = Instantiate(playerBlock, blockPosForPlayer[playerBlockPos], Quaternion.identity);
                     clonePlayerBlock.transform.parent = transform;
                     playerBlocks.Add(clonePlayerBlock);
-                    BlockPos.RemoveAt(playerBlockPos);
+                    blockPosForPlayer.RemoveAt(playerBlockPos);
                     clonePlayerBlock.SetActive(true);
                 }
             }
             reSpawnAIBlocks = spawnCount - AIBlocks.Count;
             for (int i = 0; i < reSpawnAIBlocks; i++)
             {
-                int AIBlockPos = Random.Range(0, BlockPos.Count);
-                if (BlockPos.Count > 0)
+                int AIBlockPos = Random.Range(0, blockPosForAi.Count);
+                if (blockPosForAi.Count > 0)
                 {
-                    GameObject cloneAIBlock = Instantiate(AIBlock, BlockPos[AIBlockPos], Quaternion.identity);
+                    GameObject cloneAIBlock = Instantiate(AIBlock, blockPosForAi[AIBlockPos], Quaternion.identity);
                     cloneAIBlock.transform.parent = transform;
                     AISpawnedBlocks.Add(cloneAIBlock);
                     AIBlocks.Add(cloneAIBlock);
-                    BlockPos.RemoveAt(AIBlockPos);
+                    blockPosForAi.RemoveAt(AIBlockPos);
                     cloneAIBlock.SetActive(true);
                 }
             }
@@ -101,28 +101,28 @@ public class GameManager : MonoBehaviour
             reSpawnPlayerBlocks2 = spawnCount - playerBlocks.Count;
             for (int i = 0; i < reSpawnPlayerBlocks2; i++)
             {
-                int playerBlockPos = Random.Range(0, BlockPos.Count);
+                int playerBlockPos = Random.Range(0, blockPosForPlayer.Count);
 
-                if (BlockPos.Count > 0)
+                if (blockPosForPlayer.Count > 0)
                 {
-                    GameObject clonePlayerBlock = Instantiate(playerBlock, BlockPos[playerBlockPos], Quaternion.identity);
+                    GameObject clonePlayerBlock = Instantiate(playerBlock, blockPosForPlayer[playerBlockPos], Quaternion.identity);
                     clonePlayerBlock.transform.parent = transform;
                     playerBlocks.Add(clonePlayerBlock);
-                    BlockPos.RemoveAt(playerBlockPos);
+                    blockPosForPlayer.RemoveAt(playerBlockPos);
                     clonePlayerBlock.SetActive(true);
                 }
             }
             reSpawnAIBlocks2 = spawnCount - AIBlocks.Count;
             for (int i = 0; i < reSpawnAIBlocks2; i++)
             {
-                int AIBlockPos = Random.Range(0, BlockPos.Count);
-                if (BlockPos.Count > 0)
+                int AIBlockPos = Random.Range(0, blockPosForAi.Count);
+                if (blockPosForAi.Count > 0)
                 {
-                    GameObject cloneAIBlock = Instantiate(AIBlock, BlockPos[AIBlockPos], Quaternion.identity);
+                    GameObject cloneAIBlock = Instantiate(AIBlock, blockPosForAi[AIBlockPos], Quaternion.identity);
                     cloneAIBlock.transform.parent = transform;
                     AISpawnedBlocks.Add(cloneAIBlock);
                     AIBlocks.Add(cloneAIBlock);
-                    BlockPos.RemoveAt(AIBlockPos);
+                    blockPosForAi.RemoveAt(AIBlockPos);
                     cloneAIBlock.SetActive(true);
                 }
             }

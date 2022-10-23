@@ -24,11 +24,22 @@ public class BlockComponent : MonoBehaviour
         spawnPos = transform.position;
         transform.SetParent(GameManager.instance.transform);
     }
-    public void AddList()
+    public void AddList(bool isPlayer)
     {
-        if (transform.GetComponent<BoxCollider>().enabled == false)
+        if (isPlayer)
         {
-            GameManager.instance.BlockPos.Add(spawnPos);
+
+            if (transform.GetComponent<BoxCollider>().enabled == false)
+            {
+                GameManager.instance.blockPosForPlayer.Add(spawnPos);
+            }
+        }
+        else
+        {
+            if (transform.GetComponent<BoxCollider>().enabled == false)
+            {
+                GameManager.instance.blockPosForAi.Add(spawnPos);
+            }
         }
     }
 }

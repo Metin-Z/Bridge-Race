@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
-        anim = GetComponent<Animator>();      
+        anim = GetComponent<Animator>();
     }
     private void FixedUpdate()
     {
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         Vector3 moveForward = new Vector3(dynamicJoystick.Horizontal, 0, dynamicJoystick.Vertical);
         transform.Translate(speed * Time.fixedDeltaTime * moveForward, Space.World);
         moveForward.Normalize();
-        if (dynamicJoystick.Horizontal !=0 || dynamicJoystick.Vertical !=0)
+        if (dynamicJoystick.Horizontal != 0 || dynamicJoystick.Vertical != 0)
         {
             transform.forward = moveForward;
             anim.SetBool("Run", true);
@@ -65,9 +65,9 @@ public class PlayerController : MonoBehaviour
             GameManager.instance.playerBlocks.Remove(block);
             block.transform.localEulerAngles = Vector3.zero;
             block.GetComponent<BoxCollider>().enabled = false;
-            block.transform.DOLocalJump(targetLocalPosition, 1, 1,0.25F);
+            block.transform.DOLocalJump(targetLocalPosition, 1, 1, 0.25F);
 
-            other.GetComponent<BlockComponent>().AddList();
+            other.GetComponent<BlockComponent>().AddList(true);
             BlockList.Add(block.transform);
         }
     }
