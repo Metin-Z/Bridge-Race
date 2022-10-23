@@ -39,7 +39,7 @@ public class AIController : MonoBehaviour
             return;
 
     }
-    public GameObject myBridge;
+    public GameObject myBridge1, mybridge2;
     public IEnumerator AIMovement()
     {
 
@@ -47,23 +47,31 @@ public class AIController : MonoBehaviour
             yield return new WaitForSeconds(.1f);
 
         yield return new WaitForFixedUpdate();
-       
+
 
 
         if (!target)
         {
-            target = GameManager.instance.AISpawnedBlocks.Where(x => x.activeSelf).OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).FirstOrDefault();
+            Debug.Log("if'in içine girdi");
+            target = GameManager.instance.AISpawnedBlocks.Where(x => x.activeSelf).OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).FirstOrDefault().gameObject;
         }
         else if (target)
         {
-            if (BlockList.Count() > Random.Range(10, 19))
+            if (BlockList.Count() < Random.Range(10, 19))
             {
                 _navmesh.SetDestination(target.transform.position);
-                //int count = BlockList.Count();
-                //_navmesh.SetDestination(myBridge.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position);
-                //yield return new WaitForSeconds(.15f * count);
-                //}
+                int count = BlockList.Count();
+                yield return new WaitForSeconds(.15f * count);
             }
+            else
+            {
+
+                _navmesh.SetDestination(myBridge1.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position);
+                int count = BlockList.Count();
+                yield return new WaitForSeconds(.15f * count);
+
+            }
+
         }
 
 
