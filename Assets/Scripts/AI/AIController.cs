@@ -47,25 +47,22 @@ public class AIController : MonoBehaviour
             yield return new WaitForSeconds(.1f);
 
         yield return new WaitForFixedUpdate();
+       
 
-        while (GameManager.instance.isGameRunning)
+
+        if (!target)
         {
-            if (!target)
+            target = GameManager.instance.AISpawnedBlocks.Where(x => x.activeSelf).OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).FirstOrDefault();
+        }
+        else if (target)
+        {
+            if (BlockList.Count() > Random.Range(10, 19))
             {
-                target = myBridge.GetComponent<PlayerBridge1>().AIBricks1.Where(x => x.activeSelf).OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).FirstOrDefault();
-            }
-            else if (target)
-            {
-                if (BlockList.Count() > Random.Range(10, 19))
-                {
-                    int count = BlockList.Count();
-                    while (Vector3.Distance(transform.position, myBridge.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position) > 0.2f)
-                    {
-                        _navmesh.SetDestination(myBridge.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position);
-                        yield return new WaitForSeconds(.1f);
-                    }
-                    yield return new WaitForSeconds(.15f * count);
-                }
+                _navmesh.SetDestination(target.transform.position);
+                //int count = BlockList.Count();
+                //_navmesh.SetDestination(myBridge.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position);
+                //yield return new WaitForSeconds(.15f * count);
+                //}
             }
         }
 
