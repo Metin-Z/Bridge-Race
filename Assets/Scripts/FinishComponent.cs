@@ -8,6 +8,8 @@ public class FinishComponent : MonoBehaviour
     public Transform WinnerPos, LoserPos;
     public List<GameObject> Players;
     public GameObject FinishCam;
+    public GameObject Conf;
+    public Transform ConfPos;
     void Start()
     {
         Players.Add(PlayerController.instance.gameObject);
@@ -22,6 +24,7 @@ public class FinishComponent : MonoBehaviour
             other.transform.position = WinnerPos.position;
             Players[0].transform.position = LoserPos.position;
             FinishCam.SetActive(true);
+            Instantiate(Conf, ConfPos.transform.position, Quaternion.identity);
             CameraComponent.instance.gameObject.SetActive(false);
 
             if (other.GetComponent<PlayerController>())
