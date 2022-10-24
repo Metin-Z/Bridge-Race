@@ -14,7 +14,7 @@ public class AIBridge : MonoBehaviour
             if (AIController.instance.BlockList.Count > 1)
             {
                 other.GetComponent<AIController>().Go();
-                other.GetComponent<NavMeshAgent>().speed = 4.25f;
+                other.GetComponent<NavMeshAgent>().speed = 3.25f;
                 AIController.instance.place = true;
             }
             

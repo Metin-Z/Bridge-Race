@@ -8,7 +8,6 @@ public class AIController : MonoBehaviour
 {
     public static AIController instance;
     public Transform BaseSlot;
-    public float speed;
     Animator _anim;
     NavMeshAgent _navmesh;
     public List<Transform> BlockList;
@@ -114,7 +113,7 @@ public class AIController : MonoBehaviour
             GameManager.instance.AISpawnedBlocks.Remove(block);
             other.GetComponent<BlockComponent>().AddList(false);
             BlockList.Add(block.transform);
-            _navmesh.speed = 6.5f;
+            _navmesh.speed = 5.5f;
         }
     }
     public void EndGameWin()

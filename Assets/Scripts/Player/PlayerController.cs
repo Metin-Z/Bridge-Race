@@ -86,4 +86,17 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 200);
 
     }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == ("AI"))
+        {
+            float playerY = transform.rotation.y;
+            float AIY = collision.transform.rotation.y;
+            if (playerY - AIY <180)
+            {
+                Debug.Log("Oyuncu AI'ye Çarptý");
+            }
+        }
+    }
 }
