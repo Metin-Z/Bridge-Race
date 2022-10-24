@@ -24,7 +24,7 @@ public class FinishComponent : MonoBehaviour
             other.transform.position = WinnerPos.position;
             Players[0].transform.position = LoserPos.position;
             FinishCam.SetActive(true);
-            Instantiate(Conf, ConfPos.transform.position, Quaternion.identity);
+            Instantiate(Conf, ConfPos.transform.position, Quaternion.EulerRotation(120,0,0));
             CameraComponent.instance.gameObject.SetActive(false);
 
             if (other.GetComponent<PlayerController>())
