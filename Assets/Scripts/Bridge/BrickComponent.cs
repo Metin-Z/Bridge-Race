@@ -28,16 +28,23 @@ public class BrickComponent : MonoBehaviour
                 bridge.PlayerBricks1.RemoveAt(0);
             }
 
-            if (AI == true && collision.gameObject.tag == "AI" &&
-                AIController.instance.BlockList.Count > 1 &&
-                bridge.AIBricks1.Count > 0)
-            {
-                Destroy(transform.GetComponent<BrickComponent>());
-                Destroy(AIController.instance.BlockList.LastOrDefault().gameObject);
-                AIController.instance.BlockList.Remove(AIController.instance.BlockList.LastOrDefault());
-                bridge.AIBricks1[0].SetActive(true);
-                bridge.AIBricks1.RemoveAt(0);
-            }
+           
+        }
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (AI == true && collision.gameObject.tag == "AI" &&
+               AIController.instance.BlockList.Count > 1 &&
+               bridge.AIBricks1.Count > 0)
+        {
+            Destroy(transform.GetComponent<BrickComponent>());
+            Destroy(AIController.instance.BlockList.LastOrDefault().gameObject);
+            AIController.instance.BlockList.Remove(AIController.instance.BlockList.LastOrDefault());
+            AIController.instance.place = true;
+            collision.transform.GetComponent<AIController>().Go();
+            bridge.AIBricks1[0].SetActive(true);
+            bridge.AIBricks1.RemoveAt(0);
         }
     }
 }

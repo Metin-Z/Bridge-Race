@@ -14,6 +14,8 @@ public class AIController : MonoBehaviour
     public List<Transform> BlockList;
     public int randomBlock;
     public GameObject target;
+    public GameObject brickTarget;
+    public GameObject Finish;
     public bool place;
 
     public virtual void Awake()
@@ -26,7 +28,6 @@ public class AIController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
     }
     private void Start()
     {
@@ -43,14 +44,8 @@ public class AIController : MonoBehaviour
     public GameObject myBridge1, mybridge2;
     public IEnumerator AIMovement()
     {
-
-
-
         while (!GameManager.instance.isGameRunning)
             yield return new WaitForSeconds(.1f);
-
-
-
 
         while (GameManager.instance.isGameRunning)
         {
@@ -59,7 +54,6 @@ public class AIController : MonoBehaviour
             {
                 if (!target)
                 {
-                    Debug.Log("if'in içine girdi");
                     _anim.SetBool("Run", true);
                     target = GameManager.instance.AISpawnedBlocks.Where(x => x.activeSelf).OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).FirstOrDefault().gameObject;
                 }
@@ -69,33 +63,34 @@ public class AIController : MonoBehaviour
                     {
                         if (BlockList.Count() < Random.Range(10, 19))
                         {
-                            _navmesh.SetDestination(target.transform.position);
-                            _anim.SetBool("Run", true);
-                            int count = BlockList.Count();
-                            yield return new WaitForSeconds(.15f * count);
+                            if (myBridge1.GetComponent<PlayerBridge1>().AIBricks1.Count > 0)
+                            {
+                                _navmesh.SetDestination(target.transform.position);
+                                _anim.SetBool("Run", true);
+                                int count = BlockList.Count();
+                                yield return new WaitForSeconds(.15f * count);
+                            }
+                            else if (myBridge1.GetComponent<PlayerBridge1>().AIBricks1.Count == 0)
+                            {
+                                _navmesh.SetDestination(Finish.transform.position);
+                            }                         
                         }
                         else
                         {
-
-                            _navmesh.SetDestination(myBridge1.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position);
+                            _navmesh.SetDestination(myBridge1.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position);                           
                             int count = BlockList.Count();
                             yield return new WaitForSeconds(.15f * count);
 
                         }
                     }
-                    else
-                    {
-                        if (BlockList.Count ==1)
-                        {
-                            place = false;
-                            transform.GetComponent<NavMeshAgent>().enabled = true;
-                        }
-                    }
                 }
-
+                if (BlockList.Count == 1)
+                {
+                    place = false;
+                    transform.GetComponent<NavMeshAgent>().enabled = true;
+                }
             }
         }
-
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -119,6 +114,7 @@ public class AIController : MonoBehaviour
             GameManager.instance.AISpawnedBlocks.Remove(block);
             other.GetComponent<BlockComponent>().AddList(false);
             BlockList.Add(block.transform);
+            _navmesh.speed = 6.5f;
         }
     }
     public void EndGameWin()
@@ -139,13 +135,17 @@ public class AIController : MonoBehaviour
     }
     public IEnumerator GoBridge()
     {
-        while (place == true)
-            yield return new WaitForSeconds(.1f);
         yield return new WaitForFixedUpdate();
-        Debug.Log("Block Koyuyor..");
-        transform.GetComponent<NavMeshAgent>().enabled = false;
-        transform.DOMove(myBridge1.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position, 3).OnComplete(() => Go());
-        //transform.Translate(3 * Time.fixedDeltaTime * myBridge1.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position, Space.World);
+        while (place == true)
+        {
+            Debug.Log("Block Koyuyor..");
+            if (myBridge1.GetComponent<PlayerBridge1>().AIBricks1.Count > 0)
+            {
+                brickTarget = myBridge1.GetComponent<PlayerBridge1>().AIBricks1[0].gameObject;
+                _navmesh.SetDestination(myBridge1.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position);
+            }
+            yield return new WaitForSeconds(.5f);
+        }
     }
     public void Go()
     {

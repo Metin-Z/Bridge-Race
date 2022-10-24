@@ -15,7 +15,6 @@ public class CameraComponent : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
 
@@ -12,6 +13,7 @@ public class CanvasManager : MonoBehaviour
     public TMP_Text playerTXT;
     public TMP_Text AITXT;
     public GameObject StartPanel;
+    public GameObject FinishPanel;
     public List<string> AINames;
     public string playerName;
    
@@ -25,7 +27,6 @@ public class CanvasManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
     }
 
     public void ReadPlayerName()
@@ -40,5 +41,19 @@ public class CanvasManager : MonoBehaviour
         int AIRandom = Random.Range(0, 8);
         AITXT.text = AINames[AIRandom];
         GameManager.instance.isGameRunning = true;
+    }
+    public void Restart()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void Finish()
+    {
+        StartCoroutine(FinishGame());
+    }
+    public IEnumerator FinishGame()
+    {
+        yield return new WaitForSeconds(3);
+        FinishPanel.SetActive(true);
     }
 }

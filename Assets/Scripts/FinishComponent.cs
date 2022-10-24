@@ -30,13 +30,16 @@ public class FinishComponent : MonoBehaviour
                 
                 Players[0].GetComponent<AIController>().EndGameLose();
                 Players[0].GetComponent<AIController>().GetComponent<NavMeshAgent>().enabled = false;
+                AIController.instance.place = false;
             }
             if (other.GetComponent<AIController>())
             {
                 other.GetComponent<AIController>().EndGameWin();
                 other.GetComponent<NavMeshAgent>().enabled = false;
                 Players[0].GetComponent<PlayerController>().EndGameLose();
+                AIController.instance.place = false;
             }
+            CanvasManager.instance.Finish();   
             
         }
     }
