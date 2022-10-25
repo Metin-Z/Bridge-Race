@@ -61,13 +61,18 @@ public class BlockComponent : MonoBehaviour
         transform.GetComponent<BoxCollider>().enabled = true;
         transform.GetComponent<BoxCollider>().isTrigger = false;
         rb.isKinematic = false;
-        int randomForce = Random.Range(350, 700);
-        rb.AddForce(-transform.forward * randomForce);
+        int randomForceBack = Random.Range(150, 300);
+        int randomForceRight = Random.Range(300, 600);
+        int randomForceLeft = Random.Range(150, 300);
+        rb.AddForce(-transform.forward * randomForceBack);
+        rb.AddForce(transform.right * randomForceRight);
+        rb.AddForce(-transform.right * randomForceLeft);
         if (transform.gameObject.CompareTag("BlueBlock"))
         {        
             PlayerController.instance.BlockList.Remove(transform);
             transform.GetComponent<MeshRenderer>().material.DOColor(redBlock, 0.75f);
             gameObject.tag = "RedBlock";
+            GameManager.instance.AISpawnedBlocks.Add(transform.gameObject);
             return;
         }
         if (transform.gameObject.CompareTag("RedBlock"))
