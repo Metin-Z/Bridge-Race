@@ -16,7 +16,7 @@ public class BlockComponent : MonoBehaviour
     public Color blueBlock, redBlock;
     void Start()
     {
-        rb = transform.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         targetScale = transform.localScale;
         transform.localScale = startScale;
 
@@ -61,13 +61,14 @@ public class BlockComponent : MonoBehaviour
         transform.GetComponent<BoxCollider>().enabled = true;
         transform.GetComponent<BoxCollider>().isTrigger = false;
         rb.isKinematic = false;
-        int randomForce = Random.Range(1, 15);
-        rb.AddForce(Vector3.back * randomForce);
+        int randomForce = Random.Range(350, 700);
+        rb.AddForce(-transform.forward * randomForce);
         if (transform.gameObject.CompareTag("BlueBlock"))
         {        
             PlayerController.instance.BlockList.Remove(transform);
             transform.GetComponent<MeshRenderer>().material.DOColor(redBlock, 0.75f);
             gameObject.tag = "RedBlock";
+            return;
         }
         if (transform.gameObject.CompareTag("RedBlock"))
         {
