@@ -46,6 +46,10 @@ public class AIController : MonoBehaviour
         while (!GameManager.instance.isGameRunning)
             yield return new WaitForSeconds(.1f);
 
+        if (myBridge1.GetComponent<PlayerBridge1>().AIBricks1.Count == 0)
+        {
+            _navmesh.SetDestination(Finish.transform.position);
+        }
         while (GameManager.instance.isGameRunning)
         {
             yield return new WaitForFixedUpdate();
@@ -69,10 +73,7 @@ public class AIController : MonoBehaviour
                                 int count = BlockList.Count();
                                 yield return new WaitForSeconds(.15f * count);
                             }
-                            else if (myBridge1.GetComponent<PlayerBridge1>().AIBricks1.Count == 0)
-                            {
-                                _navmesh.SetDestination(Finish.transform.position);
-                            }                         
+                            
                         }
                         else
                         {
@@ -149,5 +150,22 @@ public class AIController : MonoBehaviour
     public void Go()
     {
         StartCoroutine(GoBridge());
+    }
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == ("Player"))
+        {
+            int PlayerStackCount = PlayerController.instance.BlockList.Count;
+            GameObject Player = PlayerController.instance.gameObject;
+            for (int i = 0; i < PlayerStackCount; i++)
+            {
+                if (Player.GetComponent<PlayerController>().BlockList.LastOrDefault().gameObject.GetComponent<BlockComponent>())
+                {
+                    Player.GetComponent<PlayerController>().BlockList.LastOrDefault().gameObject.GetComponent<BlockComponent>().Fall();
+                }
+            }
+            Debug.Log("AI Oyuncu'ya Çarptý");
+
+        }
     }
 }

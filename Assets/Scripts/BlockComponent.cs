@@ -8,8 +8,15 @@ public class BlockComponent : MonoBehaviour
     public Vector3 spawnPos;
     public Vector3 startScale;
     Vector3 targetScale;
+
+    Rigidbody rb;
+
+    public bool fallControl;
+
+    public Color blueBlock, redBlock;
     void Start()
     {
+        rb = transform.GetComponent<Rigidbody>();
         targetScale = transform.localScale;
         transform.localScale = startScale;
 
@@ -26,20 +33,56 @@ public class BlockComponent : MonoBehaviour
     }
     public void AddList(bool isPlayer)
     {
-        if (isPlayer)
+        if (fallControl == false)
         {
-
-            if (transform.GetComponent<BoxCollider>().enabled == false)
+            if (isPlayer)
             {
-                GameManager.instance.blockPosForPlayer.Add(spawnPos);
+
+                if (transform.GetComponent<BoxCollider>().enabled == false)
+                {
+                    GameManager.instance.blockPosForPlayer.Add(spawnPos);
+                }
+            }
+            else
+            {
+                if (transform.GetComponent<BoxCollider>().enabled == false)
+                {
+                    GameManager.instance.blockPosForAi.Add(spawnPos);
+                }
             }
         }
-        else
+    }
+
+
+    public void Fall()
+    {
+        fallControl = true;
+        transform.parent = null;
+        transform.GetComponent<BoxCollider>().enabled = true;
+        transform.GetComponent<BoxCollider>().isTrigger = false;
+        rb.isKinematic = false;
+        int randomForce = Random.Range(1, 15);
+        rb.AddForce(Vector3.back * randomForce);
+        if (transform.gameObject.CompareTag("BlueBlock"))
+        {        
+            PlayerController.instance.BlockList.Remove(transform);
+            transform.GetComponent<MeshRenderer>().material.DOColor(redBlock, 0.75f);
+            gameObject.tag = "RedBlock";
+        }
+        if (transform.gameObject.CompareTag("RedBlock"))
         {
-            if (transform.GetComponent<BoxCollider>().enabled == false)
-            {
-                GameManager.instance.blockPosForAi.Add(spawnPos);
-            }
+            AIController.instance.BlockList.Remove(transform);
+            transform.GetComponent<MeshRenderer>().material.DOColor(blueBlock, 0.75f);
+            gameObject.tag = "BlueBlock";
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            rb.isKinematic = true;
+            transform.GetComponent<BoxCollider>().isTrigger = true;
         }
     }
 }

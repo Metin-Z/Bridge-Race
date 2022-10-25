@@ -91,12 +91,17 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == ("AI"))
         {
-            float playerY = transform.rotation.y;
-            float AIY = collision.transform.rotation.y;
-            if (playerY - AIY <180)
+            int AIStackCount = AIController.instance.BlockList.Count;
+            GameObject AI = AIController.instance.gameObject;
+            for (int i = 0; i < AIStackCount; i++)
             {
-                Debug.Log("Oyuncu AI'ye Çarptý");
+                if (AI.GetComponent<AIController>().BlockList.LastOrDefault().gameObject.GetComponent<BlockComponent>())
+                {
+                    AI.GetComponent<AIController>().BlockList.LastOrDefault().gameObject.GetComponent<BlockComponent>().Fall();
+                }             
             }
+            Debug.Log("Oyuncu AI'ye Çarptý");
+
         }
     }
 }
