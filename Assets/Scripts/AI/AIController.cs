@@ -76,6 +76,7 @@ public class AIController : MonoBehaviour
                                 }
                                 else if (myBridge1.GetComponent<PlayerBridge1>().AIBricks1.Count == 0)
                                 {
+                                    _navmesh.speed = 2f;
                                     _navmesh.SetDestination(Finish.transform.position);
                                 }
                             }
@@ -124,6 +125,8 @@ public class AIController : MonoBehaviour
     }
     public void EndGameWin()
     {
+        _navmesh.enabled = false;
+        transform.GetComponent<Rigidbody>().isKinematic = true;
         _anim.SetBool("Run", false);
         _anim.SetBool("Dance", true);
         Quaternion target = Quaternion.Euler(0, 180, 0);
@@ -136,11 +139,12 @@ public class AIController : MonoBehaviour
     }
     public void EndGameLose()
     {
+        _navmesh.enabled = false;
+        transform.GetComponent<Rigidbody>().isKinematic = true;
         _anim.SetBool("Run", false);
         _anim.SetBool("Sad", true);
         Quaternion target = Quaternion.Euler(0, 180, 0);
-        transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 200);
-
+        transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 200);     
         for (int i = 0; i < BlockList.Count; i++)
         {
             Destroy(BlockList[i].gameObject);

@@ -21,7 +21,6 @@ public class FinishComponent : MonoBehaviour
         {
             GameManager.instance.isGameRunning = false;
             Players.Remove(other.gameObject);
-            other.transform.position = WinnerPos.position;
             Players[0].transform.position = LoserPos.position;
             FinishCam.SetActive(true);
             Instantiate(Conf, ConfPos.transform.position, Quaternion.EulerRotation(120,0,0));
@@ -30,14 +29,14 @@ public class FinishComponent : MonoBehaviour
             if (other.GetComponent<PlayerController>())
             {
                 other.GetComponent<PlayerController>().EndGameWin();
-                
+                other.transform.position = WinnerPos.position;
                 Players[0].GetComponent<AIController>().EndGameLose();
-                Players[0].GetComponent<AIController>().GetComponent<NavMeshAgent>().enabled = false;
                 AIController.instance.place = false;
             }
             if (other.GetComponent<AIController>())
             {
                 other.GetComponent<AIController>().EndGameWin();
+                other.transform.position = WinnerPos.position;
                 other.GetComponent<NavMeshAgent>().enabled = false;
                 Players[0].GetComponent<PlayerController>().EndGameLose();
                 AIController.instance.place = false;
