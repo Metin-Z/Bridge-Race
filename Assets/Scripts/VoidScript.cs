@@ -6,6 +6,9 @@ public class VoidScript : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        other.transform.position = new Vector3(0, 3, 0);
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("AI"))
+        {
+            other.transform.position = new Vector3(0, 5, 0);
+        }
     }
 }

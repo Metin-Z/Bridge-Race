@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
+        dead = false;
     }
     private void FixedUpdate()
     {
@@ -35,17 +36,20 @@ public class PlayerController : MonoBehaviour
     }
     public void JoyStickMovement()
     {
-        Vector3 moveForward = new Vector3(dynamicJoystick.Horizontal, 0, dynamicJoystick.Vertical);
-        transform.Translate(speed * Time.fixedDeltaTime * moveForward, Space.World);
-        moveForward.Normalize();
-        if (dynamicJoystick.Horizontal != 0 || dynamicJoystick.Vertical != 0)
+        if (dead == false)
         {
-            transform.forward = moveForward;
-            anim.SetBool("Run", true);
-        }
-        else
-        {
-            anim.SetBool("Run", false);
+            Vector3 moveForward = new Vector3(dynamicJoystick.Horizontal, 0, dynamicJoystick.Vertical);
+            transform.Translate(speed * Time.fixedDeltaTime * moveForward, Space.World);
+            moveForward.Normalize();
+            if (dynamicJoystick.Horizontal != 0 || dynamicJoystick.Vertical != 0)
+            {
+                transform.forward = moveForward;
+                anim.SetBool("Run", true);
+            }
+            else
+            {
+                anim.SetBool("Run", false);
+            }
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -77,6 +81,11 @@ public class PlayerController : MonoBehaviour
         Quaternion target = Quaternion.Euler(0, 180, 0);
         transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 200);
 
+        for (int i = 0; i < BlockList.Count; i++)
+        {
+            Destroy(BlockList[i].gameObject);
+        }
+
     }
     public void EndGameLose()
     {
@@ -84,6 +93,11 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("Sad", true);
         Quaternion target = Quaternion.Euler(0, 180, 0);
         transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 200);
+
+        for (int i = 0; i < BlockList.Count; i++)
+        {
+            Destroy(BlockList[i].gameObject);
+        }
 
     }
 
@@ -101,7 +115,20 @@ public class PlayerController : MonoBehaviour
                 }             
             }
             Debug.Log("Oyuncu AI'ye Çarptý");
-
+            AI.GetComponent<AIController>().Death();
         }
+    }
+    public bool dead;
+    public void Death()
+    {
+        anim.SetBool("Dead", true);
+        dead = true;
+        StartCoroutine(WakeUp());
+    }
+    public IEnumerator WakeUp()
+    {
+        yield return new WaitForSeconds(4);
+        anim.SetBool("Dead", false);
+        dead = false;
     }
 }
