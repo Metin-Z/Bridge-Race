@@ -65,7 +65,7 @@ public class AIController : MonoBehaviour
                     {
                         if (transform.GetComponent<NavMeshAgent>().enabled == true)
                         {
-                            if (BlockList.Count() < Random.Range(10, 19))
+                            if (BlockList.Count() < Random.Range(13, 22))
                             {
                                 if (myBridge1.GetComponent<PlayerBridge1>().AIBricks1.Count > 0)
                                 {
@@ -82,9 +82,12 @@ public class AIController : MonoBehaviour
                             }
                             else
                             {
-                                _navmesh.SetDestination(myBridge1.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position);
-                                int count = BlockList.Count();
-                                yield return new WaitForSeconds(.15f * count);
+                                if (myBridge1.GetComponent<PlayerBridge1>().AIBricks1.Count > 0)
+                                {
+                                    _navmesh.SetDestination(myBridge1.GetComponent<PlayerBridge1>().AIBricks1[0].transform.position);
+                                    int count = BlockList.Count();
+                                    yield return new WaitForSeconds(.15f * count);
+                                }
 
                             }
                         }
@@ -144,7 +147,7 @@ public class AIController : MonoBehaviour
         _anim.SetBool("Run", false);
         _anim.SetBool("Sad", true);
         Quaternion target = Quaternion.Euler(0, 180, 0);
-        transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 200);     
+        transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 200);
         for (int i = 0; i < BlockList.Count; i++)
         {
             Destroy(BlockList[i].gameObject);
@@ -157,6 +160,10 @@ public class AIController : MonoBehaviour
         while (place == true)
         {
             Debug.Log("Block Koyuyor..");
+            if (myBridge1.GetComponent<PlayerBridge1>().AIBricks1.Count < 34)
+            {
+                target = null;
+            }       
             if (myBridge1.GetComponent<PlayerBridge1>().AIBricks1.Count > 0)
             {
                 brickTarget = myBridge1.GetComponent<PlayerBridge1>().AIBricks1[0].gameObject;
