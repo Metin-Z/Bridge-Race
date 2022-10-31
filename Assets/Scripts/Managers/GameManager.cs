@@ -17,6 +17,13 @@ public class GameManager : MonoBehaviour
     public List<GameObject> AISpawnedBlocks;
 
     public bool isGameRunning;
+
+    public AudioClip brickSound;
+    public float volume = 0.5f;
+    public void BrickSound()
+    {
+        AudioSource.PlayClipAtPoint(brickSound, PlayerController.instance.transform.position, volume);
+    }
     public virtual void Awake()
     {
         if (!instance)

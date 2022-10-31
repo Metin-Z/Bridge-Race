@@ -19,6 +19,7 @@ public class FinishComponent : MonoBehaviour
     {
         if (other.GetComponent<Rigidbody>())
         {
+            transform.GetComponent<AudioSource>().enabled = true;
             GameManager.instance.isGameRunning = false;
             Players.Remove(other.gameObject);
             Players[0].transform.position = LoserPos.position;

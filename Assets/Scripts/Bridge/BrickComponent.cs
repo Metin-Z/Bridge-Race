@@ -21,6 +21,7 @@ public class BrickComponent : MonoBehaviour
                 PlayerController.instance.BlockList.Count > 1 &&
                 bridge.PlayerBricks1.Count > 0)
             {
+                GameManager.instance.BrickSound();
                 Destroy(transform.GetComponent<BrickComponent>());
                 Destroy(PlayerController.instance.BlockList.LastOrDefault().gameObject);
                 PlayerController.instance.BlockList.Remove(PlayerController.instance.BlockList.LastOrDefault());

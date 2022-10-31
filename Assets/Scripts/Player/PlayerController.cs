@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "BlueBlock")
         {
             other.transform.parent = BaseSlot;
-
+            transform.GetComponent<AudioSource>().enabled = false;
             Vector3 targetLocalPosition = BaseSlot.localPosition;
             targetLocalPosition.y = BlockList.Count * 0.2F;
 
@@ -72,6 +72,8 @@ public class PlayerController : MonoBehaviour
 
             other.GetComponent<BlockComponent>().AddList(true);
             BlockList.Add(block.transform);
+            transform.GetComponent<AudioSource>().enabled = true;
+
         }
     }
     public void EndGameWin()
