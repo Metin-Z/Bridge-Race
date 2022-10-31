@@ -180,22 +180,32 @@ public class AIController : MonoBehaviour
     {
         if (collision.gameObject.tag == ("Player"))
         {
-            int PlayerStackCount = PlayerController.instance.BlockList.Count;
-            GameObject Player = PlayerController.instance.gameObject;
-            for (int i = 0; i < PlayerStackCount; i++)
+            float selfAngle = GameManager.instance.CalculateAngleBetweenTwoTransform(transform, collision.transform);
+            float targetAngle = GameManager.instance.CalculateAngleBetweenTwoTransform(collision.transform, transform);
+
+            if (selfAngle < targetAngle)
             {
-                if (Player.GetComponent<PlayerController>().BlockList.LastOrDefault().gameObject.GetComponent<BlockComponent>())
+                int PlayerStackCount = PlayerController.instance.BlockList.Count;
+                GameObject Player = PlayerController.instance.gameObject;
+                for (int i = 0; i < PlayerStackCount; i++)
                 {
-                    Player.GetComponent<PlayerController>().BlockList.LastOrDefault().gameObject.GetComponent<BlockComponent>().Fall();
+                    if (Player.GetComponent<PlayerController>().BlockList.LastOrDefault().gameObject.GetComponent<BlockComponent>())
+                    {
+                        Player.GetComponent<PlayerController>().BlockList.LastOrDefault().gameObject.GetComponent<BlockComponent>().Fall();
+                    }
                 }
+                Debug.Log("AI Oyuncu'ya Çarptý");
+                Player.GetComponent<PlayerController>().Death();
             }
-            Debug.Log("AI Oyuncu'ya Çarptý");
-            Player.GetComponent<PlayerController>().Death();
         }
     }
 
     public void Death()
     {
+        if (dead)
+        {
+            return;
+        }
         _anim.SetBool("Dead", true);
         dead = true;
         StartCoroutine(WakeUp());

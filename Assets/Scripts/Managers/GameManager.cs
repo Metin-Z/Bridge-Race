@@ -128,4 +128,9 @@ public class GameManager : MonoBehaviour
             }
         } while (true);
     }
+
+    public float CalculateAngleBetweenTwoTransform(Transform aTransform, Transform bTransform)
+    {
+        return Vector3.Angle(aTransform.forward, bTransform.transform.position - aTransform.position);
+    }
 }
